@@ -2,18 +2,30 @@ package com.imagegallery.list;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.ImageView;
 
-import com.imagegallery.ImageSearchResult;
+import com.imagegallery.R;
+import com.squareup.picasso.Picasso;
 
 class ImageViewHolder extends RecyclerView.ViewHolder {
 
-    public ImageViewHolder(View itemView) {
+    private final ImageView imageView;
+    private final int imageSize;
+
+    ImageViewHolder(View itemView, int imageSize) {
         super(itemView);
 
-        itemView.findViewById(R.id.image);
+        this.imageSize = imageSize;
+        imageView = (ImageView) itemView.findViewById(R.id.image);
     }
 
-    public void setImage(ImageSearchResult imageSearchResult) {
+    void setImage(ImageSearchResult image) {
+        Picasso.with(imageView.getContext())
+                .load(image.getUrl())
+                .centerCrop()
+                .resize(imageSize, imageSize)
+                .into(imageView);
 
+        imageView.setContentDescription(image.getDescription());
     }
 }

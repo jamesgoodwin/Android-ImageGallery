@@ -1,16 +1,25 @@
 apply plugin: 'com.android.application'
+//apply plugin: 'kotlin-android'
 
 android {
     compileSdkVersion 25
-    buildToolsVersion "25.0.2"
+    buildToolsVersion '25.0.2'
+
     defaultConfig {
-        applicationId "com.imagegallery"
+        applicationId 'com.imagegallery'
         minSdkVersion 21
         targetSdkVersion 25
         versionCode 1
-        versionName "1.0"
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        versionName '1.0'
+        testInstrumentationRunner 'android.support.test.runner.AndroidJUnitRunner'
     }
+
+    sourceSets {
+        main.java.srcDirs = ['src/main/java']
+//        main.kotlin.srcDirs = ['src/main/java', 'src/main/kotlin']
+        main.resources.srcDirs = ['src/main/resources']
+    }
+
     buildTypes {
         release {
             minifyEnabled false
@@ -26,15 +35,12 @@ dependencies {
     })
 
     compile 'io.reactivex:rxandroid:0.23.0'
-
     compile 'com.android.support:appcompat-v7:25.3.1'
     compile 'com.android.support:support-v4:25.3.1'
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'com.google.code.gson:gson:2.8.0'
-
     compile 'com.squareup.retrofit2:adapter-rxjava:2.3.0'
     compile 'com.squareup.retrofit2:converter-gson:2.3.0'
-
     compile 'com.squareup.retrofit2:retrofit:2.3.0'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'com.android.support:design:25.3.1'

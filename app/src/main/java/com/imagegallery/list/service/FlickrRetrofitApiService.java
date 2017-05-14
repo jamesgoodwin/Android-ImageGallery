@@ -1,4 +1,6 @@
-package com.imagegallery;
+package com.imagegallery.list.service;
+
+import com.imagegallery.model.PhotoSearchResult;
 
 import retrofit2.http.GET;
 import retrofit2.http.Query;

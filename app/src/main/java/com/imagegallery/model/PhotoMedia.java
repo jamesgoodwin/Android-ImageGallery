@@ -1,9 +1,9 @@
-package com.imagegallery;
+package com.imagegallery.model;
 
 import com.google.gson.annotations.SerializedName;
 
 @SuppressWarnings("unused")
-class PhotoMedia implements ImageUrl {
+class PhotoMedia {
 
     @SerializedName("m")
     private String url;

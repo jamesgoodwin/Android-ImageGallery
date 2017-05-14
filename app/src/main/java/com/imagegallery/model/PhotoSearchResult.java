@@ -1,4 +1,6 @@
-package com.imagegallery;
+package com.imagegallery.model;
+
+import com.imagegallery.list.ImageSearchResult;
 
 import java.util.List;
 
@@ -12,7 +14,7 @@ public class PhotoSearchResult {
         return title;
     }
 
-    public List<PhotoSearchResultItem> getItems() {
+    public List<? extends ImageSearchResult> getItems() {
         return items;
     }
 

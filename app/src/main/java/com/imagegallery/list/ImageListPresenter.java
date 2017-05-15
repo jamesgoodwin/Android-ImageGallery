@@ -3,28 +3,32 @@ package com.imagegallery.list;
 import com.imagegallery.list.service.ImageService;
 import com.imagegallery.model.PhotoSearchResult;
 
-import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.Scheduler;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Action;
 import io.reactivex.functions.Consumer;
-import io.reactivex.schedulers.Schedulers;
 
 class ImageListPresenter {
 
     private ImageListView view;
     private final ImageService imageService;
 
-    ImageListPresenter(ImageListView view, ImageService imageService) {
+    private Scheduler viewScheduler;
+    private Scheduler backgroundScheduler;
+
+    ImageListPresenter(ImageListView view, ImageService imageService, Scheduler viewScheduler, Scheduler backgroundScheduler) {
         this.view = view;
         this.imageService = imageService;
+        this.viewScheduler = viewScheduler;
+        this.backgroundScheduler = backgroundScheduler;
     }
 
     void requestImages() {
         view.showLoading(true);
 
         imageService.listPhotos()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(backgroundScheduler)
+                .observeOn(viewScheduler)
                 .doAfterTerminate(new Action() {
                     @Override
                     public void run() throws Exception {
@@ -43,8 +47,8 @@ class ImageListPresenter {
         view.showLoading(true);
 
         imageService.searchPhotos(query)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(backgroundScheduler)
+                .observeOn(viewScheduler)
                 .doAfterTerminate(new Action() {
                     @Override
                     public void run() throws Exception {

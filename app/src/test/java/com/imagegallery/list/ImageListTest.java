@@ -9,8 +9,10 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import io.reactivex.Single;
+import io.reactivex.schedulers.TestScheduler;
 
 import static org.mockito.Matchers.anyListOf;
+import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -24,17 +26,54 @@ public class ImageListTest {
     @Mock
     private ImageService imageService;
 
+    @Mock
+    private PhotoSearchResult photoSearchResult;
+
     @Test
     public void shouldDisplayImagesWhenRequested() {
-        ImageListPresenter presenter = new ImageListPresenter(imageListView, imageService);
+        TestScheduler scheduler = new TestScheduler();
+
+        ImageListPresenter presenter = new ImageListPresenter(imageListView, imageService, scheduler, scheduler);
 
         when(imageService.listPhotos())
-                .thenReturn(Single.just(new PhotoSearchResult()));
+                .thenReturn(Single.just(photoSearchResult));
 
         presenter.requestImages();
 
-        verify(imageListView, times(1)).showImages(anyListOf(ImageSearchResult.class));
+        scheduler.triggerActions();
 
+        verify(imageListView, times(1))
+                .showLoading(eq(true));
+
+        verify(imageListView, times(1))
+                .showImages(anyListOf(ImageSearchResult.class));
+
+        verify(imageListView, times(1))
+                .showLoading(eq(false));
+    }
+
+    @Test
+    public void shouldDisplayImageSearchResultsWhenRequested() {
+        TestScheduler scheduler = new TestScheduler();
+
+        ImageListPresenter presenter = new ImageListPresenter(imageListView, imageService, scheduler, scheduler);
+        String searchTerm = "dogs";
+
+        when(imageService.searchPhotos(eq(searchTerm)))
+                .thenReturn(Single.just(photoSearchResult));
+
+        presenter.requestImages(searchTerm);
+
+        scheduler.triggerActions();
+
+        verify(imageListView, times(1))
+                .showLoading(eq(true));
+
+        verify(imageListView, times(1))
+                .showImages(anyListOf(ImageSearchResult.class));
+
+        verify(imageListView, times(1))
+                .showLoading(eq(false));
     }
 
 }

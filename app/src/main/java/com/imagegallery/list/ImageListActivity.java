@@ -16,8 +16,11 @@ import com.imagegallery.list.service.FlickrImageService;
 
 import java.util.List;
 
+import io.reactivex.schedulers.Schedulers;
+
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
+import static io.reactivex.android.schedulers.AndroidSchedulers.mainThread;
 
 public class ImageListActivity extends AppCompatActivity implements ImageListView {
 
@@ -37,7 +40,7 @@ public class ImageListActivity extends AppCompatActivity implements ImageListVie
         this.searchView = (SearchView) findViewById(R.id.search_view);
         this.loadingOverlay = findViewById(R.id.loading_overlay);
 
-        this.presenter = new ImageListPresenter(this, new FlickrImageService());
+        this.presenter = new ImageListPresenter(this, new FlickrImageService(), mainThread(), Schedulers.io());
         this.presenter.requestImages();
 
         initialiseSearchView();

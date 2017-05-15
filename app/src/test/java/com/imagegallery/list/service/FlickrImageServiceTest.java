@@ -14,6 +14,8 @@ import java.util.Calendar;
 import java.util.Date;
 
 import io.reactivex.Single;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.functions.Predicate;
 
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.when;
@@ -33,8 +35,8 @@ public class FlickrImageServiceTest {
     public void shouldOrderPhotosByDatePublishedByDefaultWhenListingPhotos() {
         ArrayList<PhotoSearchResultItem> searchResultItems = new ArrayList<>();
 
-        PhotoSearchResultItem firstPublishedPhoto = new PhotoSearchResultItem("published 1st", null, null, yesterday(), yesterday());
-        PhotoSearchResultItem secondPublishedPhoto = new PhotoSearchResultItem("published 2nd", null, null, yesterday(), dateNow);
+        final PhotoSearchResultItem firstPublishedPhoto = new PhotoSearchResultItem("published 1st", null, null, yesterday(), yesterday());
+        final PhotoSearchResultItem secondPublishedPhoto = new PhotoSearchResultItem("published 2nd", null, null, yesterday(), dateNow);
 
         searchResultItems.add(firstPublishedPhoto);
         searchResultItems.add(secondPublishedPhoto);
@@ -46,16 +48,26 @@ public class FlickrImageServiceTest {
 
         flickrImageService.listPhotos()
                 .test()
-                .assertValueAt(0, searchResult -> searchResult.getItems().get(0).equals(secondPublishedPhoto))
-                .assertValueAt(0, searchResult -> searchResult.getItems().get(1).equals(firstPublishedPhoto));
+                .assertValueAt(0, new Predicate<PhotoSearchResult>() {
+                    @Override
+                    public boolean test(@NonNull PhotoSearchResult searchResult) throws Exception {
+                        return searchResult.getItems().get(0).equals(secondPublishedPhoto);
+                    }
+                })
+                .assertValueAt(0, new Predicate<PhotoSearchResult>() {
+                    @Override
+                    public boolean test(@NonNull PhotoSearchResult searchResult) throws Exception {
+                        return searchResult.getItems().get(1).equals(firstPublishedPhoto);
+                    }
+                });
     }
 
     @Test
     public void shouldOrderPhotosByDatePublishedByDefaultWhenSearchingByTag() {
         ArrayList<PhotoSearchResultItem> searchResultItems = new ArrayList<>();
 
-        PhotoSearchResultItem firstPublishedPhoto = new PhotoSearchResultItem("published 1st", null, null, yesterday(), yesterday());
-        PhotoSearchResultItem secondPublishedPhoto = new PhotoSearchResultItem("published 2nd", null, null, yesterday(), dateNow);
+        final PhotoSearchResultItem firstPublishedPhoto = new PhotoSearchResultItem("published 1st", null, null, yesterday(), yesterday());
+        final PhotoSearchResultItem secondPublishedPhoto = new PhotoSearchResultItem("published 2nd", null, null, yesterday(), dateNow);
 
         searchResultItems.add(firstPublishedPhoto);
         searchResultItems.add(secondPublishedPhoto);
@@ -68,8 +80,18 @@ public class FlickrImageServiceTest {
 
         flickrImageService.searchPhotos(searchTerm)
                 .test()
-                .assertValueAt(0, searchResult -> searchResult.getItems().get(0).equals(secondPublishedPhoto))
-                .assertValueAt(0, searchResult -> searchResult.getItems().get(1).equals(firstPublishedPhoto));
+                .assertValueAt(0, new Predicate<PhotoSearchResult>() {
+                    @Override
+                    public boolean test(@NonNull PhotoSearchResult searchResult) throws Exception {
+                        return searchResult.getItems().get(0).equals(secondPublishedPhoto);
+                    }
+                })
+                .assertValueAt(0, new Predicate<PhotoSearchResult>() {
+                    @Override
+                    public boolean test(@NonNull PhotoSearchResult searchResult) throws Exception {
+                        return searchResult.getItems().get(1).equals(firstPublishedPhoto);
+                    }
+                });
     }
 
     private Date yesterday() {

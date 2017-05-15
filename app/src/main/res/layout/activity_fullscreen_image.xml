@@ -9,14 +9,14 @@
     tools:context="com.imagegallery.fullscreen.FullscreenImageActivity">
 
     <ImageView
-        android:id="@+id/image_view"
+        android:id="@+id/imageView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
         tools:ignore="ContentDescription" />
 
     <TextView
-        android:id="@+id/description_text"
+        android:id="@+id/descriptionText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"

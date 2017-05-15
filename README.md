@@ -8,5 +8,4 @@ Android image gallery app using the Flickr API.
 - Image caching (using Picasso library)
 
 ## Requirements
-- Android Studio 2.3.2
-- Java 8
+- Android Studio 2.3.2 & Kotlin plugin

@@ -31,11 +31,12 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import static android.support.design.widget.BaseTransientBottomBar.LENGTH_LONG;
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
+import static com.imagegallery.fullscreen.FullscreenImageActivity.IMAGE_DESCRIPTION_EXTRA;
 import static com.imagegallery.fullscreen.FullscreenImageActivity.IMAGE_TITLE_EXTRA;
 import static com.imagegallery.fullscreen.FullscreenImageActivity.IMAGE_URL_EXTRA;
+import static com.imagegallery.list.ImageListPresenter.DATE_PUBLISHED_DESC_SORT_TYPE;
+import static com.imagegallery.list.ImageListPresenter.DATE_TAKEN_DESC_SORT_TYPE;
 import static com.imagegallery.list.service.FlickrImageService.FLICKR_BASE_URL;
-import static com.imagegallery.list.service.ImageService.DATE_PUBLISHED_DESC_SORT_TYPE;
-import static com.imagegallery.list.service.ImageService.DATE_TAKEN_DESC_SORT_TYPE;
 import static io.reactivex.android.schedulers.AndroidSchedulers.mainThread;
 
 public class ImageListActivity extends AppCompatActivity implements ImageListView {
@@ -126,7 +127,8 @@ public class ImageListActivity extends AppCompatActivity implements ImageListVie
         adapter.setOnImageClickListener(image -> {
             Intent intent = new Intent(ImageListActivity.this, FullscreenImageActivity.class);
             intent.putExtra(IMAGE_URL_EXTRA, image.getUrl());
-            intent.putExtra(IMAGE_TITLE_EXTRA, image.getDescription());
+            intent.putExtra(IMAGE_TITLE_EXTRA, image.getTitle());
+            intent.putExtra(IMAGE_DESCRIPTION_EXTRA, image.toString());
 
             startActivity(intent);
         });

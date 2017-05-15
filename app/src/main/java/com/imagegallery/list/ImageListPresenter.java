@@ -11,13 +11,13 @@ import java.util.Collections;
 import java.util.List;
 
 import io.reactivex.Scheduler;
-import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Action;
 import io.reactivex.functions.Consumer;
 
-import static com.imagegallery.list.service.ImageService.DATE_TAKEN_DESC_SORT_TYPE;
-
 class ImageListPresenter {
+
+    public static final int DATE_TAKEN_DESC_SORT_TYPE = 0;
+    public static final int DATE_PUBLISHED_DESC_SORT_TYPE = 1;
 
     private ImageListView view;
     private final ImageService imageService;
@@ -55,12 +55,9 @@ class ImageListPresenter {
     }
 
     private Consumer<PhotoSearchResult> onSuccess() {
-        return new Consumer<PhotoSearchResult>() {
-            @Override
-            public void accept(@NonNull PhotoSearchResult photoSearchResult) throws Exception {
-                currentSearchResults = photoSearchResult;
-                view.showImages(photoSearchResult.getItems());
-            }
+        return photoSearchResult -> {
+            currentSearchResults = photoSearchResult;
+            view.showImages(photoSearchResult.getItems());
         };
     }
 
@@ -77,12 +74,7 @@ class ImageListPresenter {
     }
 
     private Action hideLoading() {
-        return new Action() {
-            @Override
-            public void run() throws Exception {
-                view.showLoading(false);
-            }
-        };
+        return () -> view.showLoading(false);
     }
 
     void onDestroy() {

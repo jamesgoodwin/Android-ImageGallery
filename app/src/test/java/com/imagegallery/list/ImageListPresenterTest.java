@@ -20,8 +20,8 @@ import java.util.List;
 import io.reactivex.Single;
 import io.reactivex.schedulers.TestScheduler;
 
-import static com.imagegallery.list.service.ImageService.DATE_PUBLISHED_DESC_SORT_TYPE;
-import static com.imagegallery.list.service.ImageService.DATE_TAKEN_DESC_SORT_TYPE;
+import static com.imagegallery.list.ImageListPresenter.DATE_PUBLISHED_DESC_SORT_TYPE;
+import static com.imagegallery.list.ImageListPresenter.DATE_TAKEN_DESC_SORT_TYPE;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Matchers.anyListOf;

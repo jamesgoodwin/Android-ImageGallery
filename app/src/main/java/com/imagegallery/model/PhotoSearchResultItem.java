@@ -51,7 +51,12 @@ public class PhotoSearchResultItem {
         return media.getUrl();
     }
 
-    public String getDescription() {
-        return title;
+    @Override
+    public String toString() {
+        return "title='" + title + '\'' +
+                ", link='" + link + '\'' +
+                ", media=" + media +
+                ", dateTaken=" + dateTaken +
+                ", datePublished=" + datePublished;
     }
 }

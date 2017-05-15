@@ -15,4 +15,12 @@
         android:gravity="center"
         tools:ignore="ContentDescription" />
 
+    <TextView
+        android:id="@+id/description_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:textColor="@android:color/white"
+        android:textSize="12sp" />
+
 </FrameLayout>

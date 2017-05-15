@@ -6,6 +6,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.imagegallery.R;
 import com.squareup.picasso.Picasso;
@@ -21,6 +22,7 @@ public class FullscreenImageActivity extends AppCompatActivity {
 
     public static final String IMAGE_URL_EXTRA = "ImageUrl";
     public static final String IMAGE_TITLE_EXTRA = "ImageTitle";
+    public static final String IMAGE_DESCRIPTION_EXTRA = "ImageDescription";
 
     private static final int UI_ANIMATION_DELAY = 300;
 
@@ -28,25 +30,9 @@ public class FullscreenImageActivity extends AppCompatActivity {
 
     private ImageView imageView;
 
-    private final Runnable hidePart2Runnable = new Runnable() {
-        @Override
-        public void run() {
-            imageView.setSystemUiVisibility(SYSTEM_UI_FLAG_LOW_PROFILE
-                    | SYSTEM_UI_FLAG_FULLSCREEN
-                    | SYSTEM_UI_FLAG_LAYOUT_STABLE
-                    | SYSTEM_UI_FLAG_IMMERSIVE_STICKY
-                    | SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                    | SYSTEM_UI_FLAG_HIDE_NAVIGATION);
-        }
-    };
+    private Runnable hidePart2Runnable;
+    private Runnable showPart2Runnable;
 
-    private final Runnable showPart2Runnable = () -> {
-        // Delayed display of UI elements
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.show();
-        }
-    };
     private boolean visible = true;
     private final Runnable hideRunnable = this::hide;
 
@@ -57,6 +43,8 @@ public class FullscreenImageActivity extends AppCompatActivity {
         setContentView(R.layout.activity_fullscreen_image);
 
         imageView = (ImageView) findViewById(R.id.image_view);
+        TextView descriptionTextView = (TextView) findViewById(R.id.description_text);
+        descriptionTextView.setText(getIntent().getStringExtra(IMAGE_DESCRIPTION_EXTRA));
 
         setTitle(getIntent().getStringExtra(IMAGE_TITLE_EXTRA));
 
@@ -66,6 +54,20 @@ public class FullscreenImageActivity extends AppCompatActivity {
                 .into(imageView);
 
         imageView.setOnClickListener(view -> toggle());
+
+        hidePart2Runnable = () -> imageView.setSystemUiVisibility(SYSTEM_UI_FLAG_LOW_PROFILE
+                | SYSTEM_UI_FLAG_FULLSCREEN
+                | SYSTEM_UI_FLAG_LAYOUT_STABLE
+                | SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+                | SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                | SYSTEM_UI_FLAG_HIDE_NAVIGATION);
+
+        showPart2Runnable = () -> {
+            ActionBar actionBar = getSupportActionBar();
+            if (actionBar != null) {
+                actionBar.show();
+            }
+        };
     }
 
     @Override
@@ -89,17 +91,14 @@ public class FullscreenImageActivity extends AppCompatActivity {
         }
         visible = false;
 
-        // Schedule a runnable to remove the status and navigation bar after a delay
         hideHandler.removeCallbacks(showPart2Runnable);
         hideHandler.postDelayed(hidePart2Runnable, UI_ANIMATION_DELAY);
     }
 
     private void show() {
-        // Show the system bar
         imageView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION);
         visible = true;
 
-        // Schedule a runnable to display UI elements after a delay
         hideHandler.removeCallbacks(hidePart2Runnable);
         hideHandler.postDelayed(showPart2Runnable, UI_ANIMATION_DELAY);
     }

@@ -12,7 +12,7 @@ class ImageViewHolder extends RecyclerView.ViewHolder {
     private final ImageView imageView;
     private final int imageSize;
 
-    private ImageAdapter.OnImageClickListener imageClickListener;
+    private final ImageAdapter.OnImageClickListener imageClickListener;
 
     ImageViewHolder(View itemView, ImageAdapter.OnImageClickListener imageClickListener, int imageSize) {
         super(itemView);

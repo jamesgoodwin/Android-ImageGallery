@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -14,16 +13,15 @@ import com.squareup.picasso.Picasso;
 
 public class FullscreenImageActivity extends AppCompatActivity {
 
-    private static final boolean AUTO_HIDE = true;
-    private static final int AUTO_HIDE_DELAY_MILLIS = 3000;
+    public static final String IMAGE_URL = "ImageUrl";
 
     private static final int UI_ANIMATION_DELAY = 300;
-    public static final String IMAGE_URL = "ImageUrl";
-    private final Handler mHideHandler = new Handler();
+
+    private final Handler hideHandler = new Handler();
 
     private ImageView imageView;
 
-    private final Runnable mHidePart2Runnable = new Runnable() {
+    private final Runnable hidePart2Runnable = new Runnable() {
         @SuppressLint("InlinedApi")
         @Override
         public void run() {
@@ -36,7 +34,7 @@ public class FullscreenImageActivity extends AppCompatActivity {
         }
     };
 
-    private final Runnable mShowPart2Runnable = new Runnable() {
+    private final Runnable sowPart2Runnable = new Runnable() {
         @Override
         public void run() {
             // Delayed display of UI elements
@@ -46,21 +44,11 @@ public class FullscreenImageActivity extends AppCompatActivity {
             }
         }
     };
-    private boolean mVisible = true;
-    private final Runnable mHideRunnable = new Runnable() {
+    private boolean visible = true;
+    private final Runnable hideRunnable = new Runnable() {
         @Override
         public void run() {
             hide();
-        }
-    };
-
-    private final View.OnTouchListener mDelayHideTouchListener = new View.OnTouchListener() {
-        @Override
-        public boolean onTouch(View view, MotionEvent motionEvent) {
-            if (AUTO_HIDE) {
-                delayedHide(AUTO_HIDE_DELAY_MILLIS);
-            }
-            return false;
         }
     };
 
@@ -90,12 +78,11 @@ public class FullscreenImageActivity extends AppCompatActivity {
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-
         delayedHide(100);
     }
 
     private void toggle() {
-        if (mVisible) {
+        if (visible) {
             hide();
         } else {
             show();
@@ -108,26 +95,25 @@ public class FullscreenImageActivity extends AppCompatActivity {
         if (actionBar != null) {
             actionBar.hide();
         }
-        mVisible = false;
+        visible = false;
 
         // Schedule a runnable to remove the status and navigation bar after a delay
-        mHideHandler.removeCallbacks(mShowPart2Runnable);
-        mHideHandler.postDelayed(mHidePart2Runnable, UI_ANIMATION_DELAY);
+        hideHandler.removeCallbacks(sowPart2Runnable);
+        hideHandler.postDelayed(hidePart2Runnable, UI_ANIMATION_DELAY);
     }
 
-    @SuppressLint("InlinedApi")
     private void show() {
         // Show the system bar
         imageView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION);
-        mVisible = true;
+        visible = true;
 
         // Schedule a runnable to display UI elements after a delay
-        mHideHandler.removeCallbacks(mHidePart2Runnable);
-        mHideHandler.postDelayed(mShowPart2Runnable, UI_ANIMATION_DELAY);
+        hideHandler.removeCallbacks(hidePart2Runnable);
+        hideHandler.postDelayed(sowPart2Runnable, UI_ANIMATION_DELAY);
     }
 
     private void delayedHide(int delayMillis) {
-        mHideHandler.removeCallbacks(mHideRunnable);
-        mHideHandler.postDelayed(mHideRunnable, delayMillis);
+        hideHandler.removeCallbacks(hideRunnable);
+        hideHandler.postDelayed(hideRunnable, delayMillis);
     }
 }

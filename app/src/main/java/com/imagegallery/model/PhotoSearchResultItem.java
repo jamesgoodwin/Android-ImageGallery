@@ -17,6 +17,13 @@ class PhotoSearchResultItem implements ImageSearchResult {
     @SerializedName("date_taken")
     private Date dateTaken;
 
+    public PhotoSearchResultItem(String title, String link, PhotoMedia media, Date dateTaken) {
+        this.title = title;
+        this.link = link;
+        this.media = media;
+        this.dateTaken = dateTaken;
+    }
+
     public String getTitle() {
         return title;
     }

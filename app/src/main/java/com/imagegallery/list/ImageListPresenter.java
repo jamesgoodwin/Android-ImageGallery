@@ -12,7 +12,7 @@ import io.reactivex.schedulers.Schedulers;
 class ImageListPresenter {
 
     private ImageListView view;
-    private ImageService imageService;
+    private final ImageService imageService;
 
     ImageListPresenter(ImageListView view, ImageService imageService) {
         this.view = view;

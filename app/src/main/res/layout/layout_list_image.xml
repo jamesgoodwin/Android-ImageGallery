@@ -10,4 +10,11 @@
         android:layout_height="wrap_content"
         tools:ignore="ContentDescription" />
 
+    <TextView
+        tools:text="Really long image description here"
+        android:ellipsize="end"
+        android:layout_gravity="bottom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
 </FrameLayout>

@@ -13,7 +13,8 @@ import com.squareup.picasso.Picasso;
 
 public class FullscreenImageActivity extends AppCompatActivity {
 
-    public static final String IMAGE_URL = "ImageUrl";
+    public static final String IMAGE_URL_EXTRA = "ImageUrl";
+    public static final String IMAGE_TITLE_EXTRA = "ImageTitle";
 
     private static final int UI_ANIMATION_DELAY = 300;
 
@@ -60,10 +61,10 @@ public class FullscreenImageActivity extends AppCompatActivity {
 
         imageView = (ImageView) findViewById(R.id.image_view);
 
-        String imageUrl = getIntent().getStringExtra(IMAGE_URL);
+        setTitle(getIntent().getStringExtra(IMAGE_TITLE_EXTRA));
 
         Picasso.with(this)
-                .load(imageUrl)
+                .load(getIntent().getStringExtra(IMAGE_URL_EXTRA))
                 .fit().centerInside()
                 .into(imageView);
 

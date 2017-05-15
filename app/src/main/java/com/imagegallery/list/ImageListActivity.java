@@ -1,6 +1,5 @@
 package com.imagegallery.list;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -20,6 +19,8 @@ import io.reactivex.schedulers.Schedulers;
 
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
+import static com.imagegallery.fullscreen.FullscreenImageActivity.IMAGE_TITLE_EXTRA;
+import static com.imagegallery.fullscreen.FullscreenImageActivity.IMAGE_URL_EXTRA;
 import static io.reactivex.android.schedulers.AndroidSchedulers.mainThread;
 
 public class ImageListActivity extends AppCompatActivity implements ImageListView {
@@ -62,7 +63,9 @@ public class ImageListActivity extends AppCompatActivity implements ImageListVie
             @Override
             public void onImageClicked(ImageSearchResult image) {
                 Intent intent = new Intent(ImageListActivity.this, FullscreenImageActivity.class);
-                intent.putExtra(FullscreenImageActivity.IMAGE_URL, image.getUrl());
+                intent.putExtra(IMAGE_URL_EXTRA, image.getUrl());
+                intent.putExtra(IMAGE_TITLE_EXTRA, image.getDescription());
+
                 startActivity(intent);
             }
         });
@@ -93,7 +96,7 @@ public class ImageListActivity extends AppCompatActivity implements ImageListVie
     }
 
     private void hideKeyboard() {
-        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(searchView.getWindowToken(), 0);
     }
 

@@ -40,23 +40,15 @@ public class FullscreenImageActivity extends AppCompatActivity {
         }
     };
 
-    private final Runnable sowPart2Runnable = new Runnable() {
-        @Override
-        public void run() {
-            // Delayed display of UI elements
-            ActionBar actionBar = getSupportActionBar();
-            if (actionBar != null) {
-                actionBar.show();
-            }
+    private final Runnable showPart2Runnable = () -> {
+        // Delayed display of UI elements
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.show();
         }
     };
     private boolean visible = true;
-    private final Runnable hideRunnable = new Runnable() {
-        @Override
-        public void run() {
-            hide();
-        }
-    };
+    private final Runnable hideRunnable = this::hide;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,12 +65,7 @@ public class FullscreenImageActivity extends AppCompatActivity {
                 .fit().centerInside()
                 .into(imageView);
 
-        imageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                toggle();
-            }
-        });
+        imageView.setOnClickListener(view -> toggle());
     }
 
     @Override
@@ -96,7 +83,6 @@ public class FullscreenImageActivity extends AppCompatActivity {
     }
 
     private void hide() {
-        // Hide UI first
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.hide();
@@ -104,7 +90,7 @@ public class FullscreenImageActivity extends AppCompatActivity {
         visible = false;
 
         // Schedule a runnable to remove the status and navigation bar after a delay
-        hideHandler.removeCallbacks(sowPart2Runnable);
+        hideHandler.removeCallbacks(showPart2Runnable);
         hideHandler.postDelayed(hidePart2Runnable, UI_ANIMATION_DELAY);
     }
 
@@ -115,7 +101,7 @@ public class FullscreenImageActivity extends AppCompatActivity {
 
         // Schedule a runnable to display UI elements after a delay
         hideHandler.removeCallbacks(hidePart2Runnable);
-        hideHandler.postDelayed(sowPart2Runnable, UI_ANIMATION_DELAY);
+        hideHandler.postDelayed(showPart2Runnable, UI_ANIMATION_DELAY);
     }
 
     private void delayedHide(int delayMillis) {

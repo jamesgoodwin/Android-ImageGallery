@@ -1,12 +1,9 @@
 package com.imagegallery.list;
 
 import com.imagegallery.list.service.ImageService;
-import com.imagegallery.model.PhotoSearchResult;
 
 import io.reactivex.Scheduler;
-import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Action;
-import io.reactivex.functions.Consumer;
 
 class ImageListPresenter {
 
@@ -29,18 +26,8 @@ class ImageListPresenter {
         imageService.listPhotos()
                 .subscribeOn(backgroundScheduler)
                 .observeOn(viewScheduler)
-                .doAfterTerminate(new Action() {
-                    @Override
-                    public void run() throws Exception {
-                        view.showLoading(false);
-                    }
-                })
-                .subscribe(new Consumer<PhotoSearchResult>() {
-                    @Override
-                    public void accept(@NonNull PhotoSearchResult photoSearchResult) throws Exception {
-                        view.showImages(photoSearchResult.getItems());
-                    }
-                });
+                .doAfterTerminate(() -> view.showLoading(false))
+                .subscribe(photoSearchResult -> view.showImages(photoSearchResult.getItems()));
     }
 
     void requestImages(String query) {
@@ -55,12 +42,7 @@ class ImageListPresenter {
                         view.showLoading(false);
                     }
                 })
-                .subscribe(new Consumer<PhotoSearchResult>() {
-                    @Override
-                    public void accept(@NonNull PhotoSearchResult photoSearchResult) throws Exception {
-                        view.showImages(photoSearchResult.getItems());
-                    }
-                });
+                .subscribe(photoSearchResult -> view.showImages(photoSearchResult.getItems()));
     }
 
     void onDestroy() {

@@ -59,15 +59,13 @@ public class ImageListActivity extends AppCompatActivity implements ImageListVie
         int columns = 3;
 
         ImageAdapter adapter = new ImageAdapter(images, columns);
-        adapter.setOnImageClickListener(new ImageAdapter.OnImageClickListener() {
-            @Override
-            public void onImageClicked(ImageSearchResult image) {
-                Intent intent = new Intent(ImageListActivity.this, FullscreenImageActivity.class);
-                intent.putExtra(IMAGE_URL_EXTRA, image.getUrl());
-                intent.putExtra(IMAGE_TITLE_EXTRA, image.getDescription());
 
-                startActivity(intent);
-            }
+        adapter.setOnImageClickListener(image -> {
+            Intent intent = new Intent(ImageListActivity.this, FullscreenImageActivity.class);
+            intent.putExtra(IMAGE_URL_EXTRA, image.getUrl());
+            intent.putExtra(IMAGE_TITLE_EXTRA, image.getDescription());
+
+            startActivity(intent);
         });
 
         imagesList.setAdapter(adapter);

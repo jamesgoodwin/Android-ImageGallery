@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">Image Gallery</string>
-    <string name="flickr_gallery">Flickr Gallery</string>
+    <string name="Gallery">Gallery</string>
     <string name="search">Search</string>
     <string name="check_connection">Check your internet connection and try again</string>
 </resources>

@@ -8,4 +8,4 @@ Android image gallery app using the Flickr API.
 
 ## Requirements
 - Android Studio 2.3.2
-- Kotlin plugin
+- Java 8

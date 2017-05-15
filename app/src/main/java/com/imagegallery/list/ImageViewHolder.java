@@ -29,13 +29,7 @@ class ImageViewHolder extends RecyclerView.ViewHolder {
                 .resize(imageSize, imageSize)
                 .into(imageView);
 
-        imageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                imageClickListener.onImageClicked(image);
-            }
-        });
-
+        imageView.setOnClickListener(view -> imageClickListener.onImageClicked(image));
         imageView.setContentDescription(image.getDescription());
     }
 }

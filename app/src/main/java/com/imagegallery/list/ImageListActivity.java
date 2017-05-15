@@ -13,17 +13,23 @@ import android.widget.SearchView;
 import com.imagegallery.R;
 import com.imagegallery.fullscreen.FullscreenImageActivity;
 import com.imagegallery.list.service.FlickrImageService;
+import com.imagegallery.list.service.FlickrRetrofitApiService;
 import com.imagegallery.model.PhotoSearchResultItem;
 
 import java.util.List;
 
 import io.reactivex.schedulers.Schedulers;
+import okhttp3.OkHttpClient;
+import retrofit2.Retrofit;
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 import static android.support.design.widget.BaseTransientBottomBar.LENGTH_LONG;
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 import static com.imagegallery.fullscreen.FullscreenImageActivity.IMAGE_TITLE_EXTRA;
 import static com.imagegallery.fullscreen.FullscreenImageActivity.IMAGE_URL_EXTRA;
+import static com.imagegallery.list.service.FlickrImageService.FLICKR_BASE_URL;
 import static io.reactivex.android.schedulers.AndroidSchedulers.mainThread;
 
 public class ImageListActivity extends AppCompatActivity implements ImageListView {
@@ -44,7 +50,19 @@ public class ImageListActivity extends AppCompatActivity implements ImageListVie
         this.searchView = (SearchView) findViewById(R.id.search_view);
         this.loadingOverlay = findViewById(R.id.loading_overlay);
 
-        this.presenter = new ImageListPresenter(this, new FlickrImageService(), mainThread(), Schedulers.io());
+        // this is poor man's dependency injection to allow the FlickrImageService
+        // to be easily tested, creating the dependencies outside of the service.
+        Retrofit retrofit = new Retrofit.Builder()
+                .addConverterFactory(GsonConverterFactory.create())
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .baseUrl(FLICKR_BASE_URL)
+                .client(new OkHttpClient())
+                .build();
+
+        FlickrRetrofitApiService apiService = retrofit.create(FlickrRetrofitApiService.class);
+        FlickrImageService imageService = new FlickrImageService(apiService);
+
+        this.presenter = new ImageListPresenter(this, imageService, mainThread(), Schedulers.io());
         this.presenter.requestImages();
 
         initialiseSearchView();

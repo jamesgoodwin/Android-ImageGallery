@@ -6,7 +6,7 @@ import io.reactivex.Single;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
 
-interface FlickrRetrofitApiService {
+public interface FlickrRetrofitApiService {
 
     String SEARCH_PATH = "/services/feeds/photos_public.gne?format=json&nojsoncallback=true";
 

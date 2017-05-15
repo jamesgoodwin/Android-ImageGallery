@@ -8,11 +8,8 @@ import android.support.design.widget.Snackbar
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.GridLayoutManager
-import android.support.v7.widget.RecyclerView
-import android.support.v7.widget.Toolbar
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.inputmethod.InputMethodManager
@@ -30,6 +27,7 @@ import com.imagegallery.list.service.FlickrRetrofitApiService
 import com.imagegallery.model.PhotoSearchResultItem
 import io.reactivex.android.schedulers.AndroidSchedulers.mainThread
 import io.reactivex.schedulers.Schedulers
+import kotlinx.android.synthetic.main.activity_image_list.*
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
@@ -37,22 +35,13 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 class ImageListActivity : AppCompatActivity(), ImageListView {
 
-    private var imagesList: RecyclerView? = null
-    private var searchView: SearchView? = null
-    private var loadingOverlay: View? = null
-
     private var presenter: ImageListPresenter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_image_list)
-
-        this.searchView = findViewById(R.id.searchView) as SearchView
-        this.imagesList = findViewById(R.id.imagesList) as RecyclerView
-        this.loadingOverlay = findViewById(R.id.loadingOverlay)
-
-        setSupportActionBar(findViewById(R.id.appBar) as Toolbar)
+        setSupportActionBar(appBar)
 
         // simple method to allow the FlickrImageService to be easily tested
         // creating the dependencies outside of the service.
@@ -67,7 +56,10 @@ class ImageListActivity : AppCompatActivity(), ImageListView {
         val imageService = FlickrImageService(apiService)
 
         this.presenter = ImageListPresenter(this, imageService, mainThread(), Schedulers.io())
-        this.presenter!!.requestImages()
+
+        if(savedInstanceState == null) {
+            this.presenter!!.requestImages()
+        }
 
         initialiseSearchView()
     }
@@ -106,19 +98,19 @@ class ImageListActivity : AppCompatActivity(), ImageListView {
     }
 
     override fun showLoading(show: Boolean) {
-        loadingOverlay!!.visibility = if (show) VISIBLE else GONE
+        loadingOverlay.visibility = if (show) VISIBLE else GONE
     }
 
     override fun showConnectionError() {
-        Snackbar.make(imagesList!!, R.string.check_connection, LENGTH_LONG).show()
+        Snackbar.make(imagesList, R.string.check_connection, LENGTH_LONG).show()
     }
 
     override fun showGenericError() {
-        Snackbar.make(imagesList!!, R.string.error_retrieving_results, LENGTH_LONG).show()
+        Snackbar.make(imagesList, R.string.error_retrieving_results, LENGTH_LONG).show()
     }
 
     private fun initialiseSearchView() {
-        searchView!!.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(text: String): Boolean {
                 hideKeyboard()
                 presenter!!.requestImages(text)
@@ -133,7 +125,7 @@ class ImageListActivity : AppCompatActivity(), ImageListView {
 
     private fun hideKeyboard() {
         val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        imm.hideSoftInputFromWindow(searchView!!.windowToken, 0)
+        imm.hideSoftInputFromWindow(searchView.windowToken, 0)
     }
 
     override fun showImages(images: List<PhotoSearchResultItem>) {
@@ -147,12 +139,12 @@ class ImageListActivity : AppCompatActivity(), ImageListView {
                 intent.putExtra(IMAGE_TITLE_EXTRA, image.title)
                 intent.putExtra(IMAGE_DESCRIPTION_EXTRA, image.toString())
 
-                this@ImageListActivity.startActivity(intent)
+                startActivity(intent)
             }
         })
 
-        imagesList!!.adapter = adapter
-        imagesList!!.layoutManager = GridLayoutManager(this@ImageListActivity, columns)
+        imagesList.adapter = adapter
+        imagesList.layoutManager = GridLayoutManager(this@ImageListActivity, columns)
     }
 
     companion object {

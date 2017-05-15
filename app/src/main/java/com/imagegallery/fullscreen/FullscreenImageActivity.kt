@@ -31,13 +31,12 @@ class FullscreenImageActivity : AppCompatActivity() {
                 .fit().centerInside()
                 .into(imageView)
 
-        imageView!!.setOnClickListener { this@FullscreenImageActivity.toggle() }
+        imageView.setOnClickListener { this@FullscreenImageActivity.toggle() }
 
-        hidePart2Runnable = Runnable { imageView!!.systemUiVisibility = SYSTEM_UI_FLAG_LOW_PROFILE or SYSTEM_UI_FLAG_FULLSCREEN or SYSTEM_UI_FLAG_LAYOUT_STABLE or SYSTEM_UI_FLAG_IMMERSIVE_STICKY or SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION or SYSTEM_UI_FLAG_HIDE_NAVIGATION }
+        hidePart2Runnable = Runnable { imageView.systemUiVisibility = SYSTEM_UI_FLAG_LOW_PROFILE or SYSTEM_UI_FLAG_FULLSCREEN or SYSTEM_UI_FLAG_LAYOUT_STABLE or SYSTEM_UI_FLAG_IMMERSIVE_STICKY or SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION or SYSTEM_UI_FLAG_HIDE_NAVIGATION }
 
         showPart2Runnable = Runnable {
-            val actionBar = this@FullscreenImageActivity.supportActionBar
-            actionBar?.show()
+            supportActionBar?.show()
         }
     }
 
@@ -64,7 +63,7 @@ class FullscreenImageActivity : AppCompatActivity() {
     }
 
     private fun show() {
-        imageView!!.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+        imageView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
         actionBarVisible = true
 
         hideHandler.removeCallbacks(hidePart2Runnable)

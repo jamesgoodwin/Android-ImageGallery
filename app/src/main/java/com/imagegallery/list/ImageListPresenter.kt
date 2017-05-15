@@ -10,7 +10,6 @@ import java.net.UnknownHostException
 import java.util.*
 
 internal class ImageListPresenter(
-
         private var view: ImageListView?,
         private val imageService: ImageService,
         private val viewScheduler: Scheduler,

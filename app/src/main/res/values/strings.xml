@@ -4,4 +4,6 @@
     <string name="search">Search</string>
     <string name="check_connection">Check your internet connection and try again</string>
     <string name="error_retrieving_results">Error retrieving results</string>
+    <string name="sort">Sort</string>
+    <string name="sort_results_by">Sort results by</string>
 </resources>

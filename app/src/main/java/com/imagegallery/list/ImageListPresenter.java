@@ -1,13 +1,21 @@
 package com.imagegallery.list;
 
+import android.util.Log;
+
 import com.imagegallery.list.service.ImageService;
 import com.imagegallery.model.PhotoSearchResult;
+import com.imagegallery.model.PhotoSearchResultItem;
 
 import java.net.UnknownHostException;
+import java.util.Collections;
+import java.util.List;
 
 import io.reactivex.Scheduler;
+import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Action;
 import io.reactivex.functions.Consumer;
+
+import static com.imagegallery.list.service.ImageService.DATE_TAKEN_DESC_SORT_TYPE;
 
 class ImageListPresenter {
 
@@ -16,6 +24,8 @@ class ImageListPresenter {
 
     private Scheduler viewScheduler;
     private Scheduler backgroundScheduler;
+
+    private PhotoSearchResult currentSearchResults;
 
     ImageListPresenter(ImageListView view, ImageService imageService, Scheduler viewScheduler, Scheduler backgroundScheduler) {
         this.view = view;
@@ -45,11 +55,19 @@ class ImageListPresenter {
     }
 
     private Consumer<PhotoSearchResult> onSuccess() {
-        return photoSearchResult -> view.showImages(photoSearchResult.getItems());
+        return new Consumer<PhotoSearchResult>() {
+            @Override
+            public void accept(@NonNull PhotoSearchResult photoSearchResult) throws Exception {
+                currentSearchResults = photoSearchResult;
+                view.showImages(photoSearchResult.getItems());
+            }
+        };
     }
 
     private Consumer<Throwable> onError() {
         return throwable -> {
+            Log.e("ImageGallery", "Error retrieving images", throwable);
+
             if(throwable instanceof UnknownHostException) {
                 view.showConnectionError();
             } else {
@@ -59,10 +77,41 @@ class ImageListPresenter {
     }
 
     private Action hideLoading() {
-        return () -> view.showLoading(false);
+        return new Action() {
+            @Override
+            public void run() throws Exception {
+                view.showLoading(false);
+            }
+        };
     }
 
     void onDestroy() {
         this.view = null;
+    }
+
+    void showSortedSearchResults(int sortType) {
+        if (currentSearchResults != null) {
+            List<PhotoSearchResultItem> searchResultItems = currentSearchResults.getItems();
+
+            switch (sortType) {
+                case DATE_TAKEN_DESC_SORT_TYPE:
+                    sortByDateTaken(searchResultItems);
+                    break;
+                default:
+                    sortByDatePublished(searchResultItems);
+            }
+
+            view.showImages(searchResultItems);
+        }
+    }
+
+    private void sortByDatePublished(List<PhotoSearchResultItem> searchResults) {
+        Collections.sort(searchResults, (result1, result2)
+                -> result2.getDatePublished().compareTo(result1.getDatePublished()));
+    }
+
+    private void sortByDateTaken(List<PhotoSearchResultItem> searchResults) {
+        Collections.sort(searchResults, (result1, result2)
+                -> result2.getDateTaken().compareTo(result1.getDateTaken()));
     }
 }

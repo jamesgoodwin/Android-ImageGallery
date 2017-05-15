@@ -11,10 +11,6 @@ public interface ImageService {
 
     Single<PhotoSearchResult> listPhotos();
 
-    Single<PhotoSearchResult> listPhotos(int sortType);
-
     Single<PhotoSearchResult> searchPhotos(String query);
-
-    Single<PhotoSearchResult> searchPhotos(String query, int sortType);
 
 }

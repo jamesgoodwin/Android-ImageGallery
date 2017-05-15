@@ -3,9 +3,13 @@ package com.imagegallery.list;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.SearchView;
@@ -30,9 +34,13 @@ import static android.view.View.VISIBLE;
 import static com.imagegallery.fullscreen.FullscreenImageActivity.IMAGE_TITLE_EXTRA;
 import static com.imagegallery.fullscreen.FullscreenImageActivity.IMAGE_URL_EXTRA;
 import static com.imagegallery.list.service.FlickrImageService.FLICKR_BASE_URL;
+import static com.imagegallery.list.service.ImageService.DATE_PUBLISHED_DESC_SORT_TYPE;
+import static com.imagegallery.list.service.ImageService.DATE_TAKEN_DESC_SORT_TYPE;
 import static io.reactivex.android.schedulers.AndroidSchedulers.mainThread;
 
 public class ImageListActivity extends AppCompatActivity implements ImageListView {
+
+    private static final int DATE_TAKEN_DIALOG_OPTION_POSITION = 1;
 
     private RecyclerView imagesList;
     private SearchView searchView;
@@ -50,6 +58,8 @@ public class ImageListActivity extends AppCompatActivity implements ImageListVie
         this.imagesList = (RecyclerView) findViewById(R.id.images_list);
         this.loadingOverlay = findViewById(R.id.loading_overlay);
 
+        setSupportActionBar((Toolbar) findViewById(R.id.app_bar));
+
         // simple method to allow the FlickrImageService to be easily tested
         // creating the dependencies outside of the service.
         Retrofit retrofit = new Retrofit.Builder()
@@ -66,19 +76,45 @@ public class ImageListActivity extends AppCompatActivity implements ImageListVie
         this.presenter.requestImages();
 
         initialiseSearchView();
-        hideKeyboard();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_images_list, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.sort_menu_item:
+                showSortTypeDialog();
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void showSortTypeDialog() {
+        new AlertDialog.Builder(this)
+                .setTitle(R.string.sort_results_by)
+                .setItems(R.array.sort_type_array, (dialog, which) -> {
+                    switch (which) {
+                        case DATE_TAKEN_DIALOG_OPTION_POSITION:
+                            presenter.showSortedSearchResults(DATE_TAKEN_DESC_SORT_TYPE);
+                            break;
+                        default:
+                            presenter.showSortedSearchResults(DATE_PUBLISHED_DESC_SORT_TYPE);
+                            break;
+                    }
+                }).create()
+                .show();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         this.presenter.onDestroy();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        hideKeyboard();
     }
 
     @Override

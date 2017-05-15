@@ -15,7 +15,6 @@ import java.util.Date;
 
 import io.reactivex.Single;
 
-import static com.imagegallery.list.service.ImageService.DATE_TAKEN_DESC_SORT_TYPE;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.when;
 
@@ -52,27 +51,6 @@ public class FlickrImageServiceTest {
     }
 
     @Test
-    public void shouldOrderPhotosByDateTakenWhenListingPhotosWithSortType() {
-        ArrayList<PhotoSearchResultItem> searchResultItems = new ArrayList<>();
-
-        PhotoSearchResultItem firstTakenPhoto = new PhotoSearchResultItem("taken 1st", null, null, yesterday(), dateNow);
-        PhotoSearchResultItem secondTakenPhoto = new PhotoSearchResultItem("taken 2nd", null, null, dateNow, dateNow);
-
-        searchResultItems.add(firstTakenPhoto);
-        searchResultItems.add(secondTakenPhoto);
-
-        PhotoSearchResult photoSearchResult = new PhotoSearchResult(null, searchResultItems);
-
-        when(apiService.listPhotos())
-                .thenReturn(Single.just(photoSearchResult));
-
-        flickrImageService.listPhotos(DATE_TAKEN_DESC_SORT_TYPE)
-                .test()
-                .assertValueAt(0, searchResult -> searchResult.getItems().get(0).equals(secondTakenPhoto))
-                .assertValueAt(0, searchResult -> searchResult.getItems().get(1).equals(firstTakenPhoto));
-    }
-
-    @Test
     public void shouldOrderPhotosByDatePublishedByDefaultWhenSearchingByTag() {
         ArrayList<PhotoSearchResultItem> searchResultItems = new ArrayList<>();
 
@@ -92,28 +70,6 @@ public class FlickrImageServiceTest {
                 .test()
                 .assertValueAt(0, searchResult -> searchResult.getItems().get(0).equals(secondPublishedPhoto))
                 .assertValueAt(0, searchResult -> searchResult.getItems().get(1).equals(firstPublishedPhoto));
-    }
-
-    @Test
-    public void shouldOrderPhotosByDateTakenWhenSearchingByTagWithSortType() {
-        ArrayList<PhotoSearchResultItem> searchResultItems = new ArrayList<>();
-
-        PhotoSearchResultItem firstTakenPhoto = new PhotoSearchResultItem("taken 1st", null, null, yesterday(), dateNow);
-        PhotoSearchResultItem secondTakenPhoto = new PhotoSearchResultItem("taken 2nd", null, null, dateNow, dateNow);
-
-        searchResultItems.add(firstTakenPhoto);
-        searchResultItems.add(secondTakenPhoto);
-
-        PhotoSearchResult photoSearchResult = new PhotoSearchResult(null, searchResultItems);
-
-        String searchTerm = "dogs";
-        when(apiService.searchPhotos(eq(searchTerm)))
-                .thenReturn(Single.just(photoSearchResult));
-
-        flickrImageService.searchPhotos(searchTerm, DATE_TAKEN_DESC_SORT_TYPE)
-                .test()
-                .assertValueAt(0, searchResult -> searchResult.getItems().get(0).equals(secondTakenPhoto))
-                .assertValueAt(0, searchResult -> searchResult.getItems().get(1).equals(firstTakenPhoto));
     }
 
     private Date yesterday() {

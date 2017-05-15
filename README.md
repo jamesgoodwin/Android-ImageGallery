@@ -1,5 +1,5 @@
 # Flickr Android client app
-Displays the latest images uploaded to the Flickr platform
+Android app displaying the latest images uploaded to the Flickr platform
 
 ## Features
 - Displays a list of search results using the Flickr public API

@@ -2,6 +2,7 @@ package com.imagegallery.list;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -12,11 +13,13 @@ import android.widget.SearchView;
 import com.imagegallery.R;
 import com.imagegallery.fullscreen.FullscreenImageActivity;
 import com.imagegallery.list.service.FlickrImageService;
+import com.imagegallery.model.PhotoSearchResultItem;
 
 import java.util.List;
 
 import io.reactivex.schedulers.Schedulers;
 
+import static android.support.design.widget.BaseTransientBottomBar.LENGTH_LONG;
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 import static com.imagegallery.fullscreen.FullscreenImageActivity.IMAGE_TITLE_EXTRA;
@@ -35,7 +38,7 @@ public class ImageListActivity extends AppCompatActivity implements ImageListVie
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_image_list);
 
         this.imagesList = (RecyclerView) findViewById(R.id.images_list);
         this.searchView = (SearchView) findViewById(R.id.search_view);
@@ -55,7 +58,7 @@ public class ImageListActivity extends AppCompatActivity implements ImageListVie
     }
 
     @Override
-    public void showImages(List<? extends ImageSearchResult> images) {
+    public void showImages(List<PhotoSearchResultItem> images) {
         int columns = 3;
 
         ImageAdapter adapter = new ImageAdapter(images, columns);
@@ -75,6 +78,11 @@ public class ImageListActivity extends AppCompatActivity implements ImageListVie
     @Override
     public void showLoading(boolean show) {
         loadingOverlay.setVisibility(show ? VISIBLE : GONE);
+    }
+
+    @Override
+    public void showConnectionError() {
+        Snackbar.make(imagesList, R.string.check_connection, LENGTH_LONG).show();
     }
 
     private void initialiseSearchView() {

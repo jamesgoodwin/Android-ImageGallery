@@ -1,7 +1,5 @@
 package com.imagegallery.model;
 
-import com.imagegallery.list.ImageSearchResult;
-
 import java.util.List;
 
 @SuppressWarnings("unused")
@@ -19,8 +17,7 @@ public class PhotoSearchResult {
         return title;
     }
 
-    public List<? extends ImageSearchResult> getItems() {
+    public List<PhotoSearchResultItem> getItems() {
         return items;
     }
-
 }

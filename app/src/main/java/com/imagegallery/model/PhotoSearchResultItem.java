@@ -1,12 +1,11 @@
 package com.imagegallery.model;
 
 import com.google.gson.annotations.SerializedName;
-import com.imagegallery.list.ImageSearchResult;
 
 import java.util.Date;
 
 @SuppressWarnings("unused")
-class PhotoSearchResultItem implements ImageSearchResult {
+public class PhotoSearchResultItem {
 
     private String title;
 
@@ -17,11 +16,15 @@ class PhotoSearchResultItem implements ImageSearchResult {
     @SerializedName("date_taken")
     private Date dateTaken;
 
-    public PhotoSearchResultItem(String title, String link, PhotoMedia media, Date dateTaken) {
+    @SerializedName("published")
+    private Date datePublished;
+
+    public PhotoSearchResultItem(String title, String link, PhotoMedia media, Date dateTaken, Date datePublished) {
         this.title = title;
         this.link = link;
         this.media = media;
         this.dateTaken = dateTaken;
+        this.datePublished = datePublished;
     }
 
     public String getTitle() {
@@ -40,12 +43,14 @@ class PhotoSearchResultItem implements ImageSearchResult {
         return dateTaken;
     }
 
-    @Override
+    public Date getDatePublished() {
+        return datePublished;
+    }
+
     public String getUrl() {
         return media.getUrl();
     }
 
-    @Override
     public String getDescription() {
         return title;
     }

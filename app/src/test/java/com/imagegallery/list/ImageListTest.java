@@ -2,11 +2,14 @@ package com.imagegallery.list;
 
 import com.imagegallery.list.service.ImageService;
 import com.imagegallery.model.PhotoSearchResult;
+import com.imagegallery.model.PhotoSearchResultItem;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+
+import java.net.UnknownHostException;
 
 import io.reactivex.Single;
 import io.reactivex.schedulers.TestScheduler;
@@ -46,7 +49,7 @@ public class ImageListTest {
                 .showLoading(eq(true));
 
         verify(imageListView, times(1))
-                .showImages(anyListOf(ImageSearchResult.class));
+                .showImages(anyListOf(PhotoSearchResultItem.class));
 
         verify(imageListView, times(1))
                 .showLoading(eq(false));
@@ -70,10 +73,56 @@ public class ImageListTest {
                 .showLoading(eq(true));
 
         verify(imageListView, times(1))
-                .showImages(anyListOf(ImageSearchResult.class));
+                .showImages(anyListOf(PhotoSearchResultItem.class));
 
         verify(imageListView, times(1))
                 .showLoading(eq(false));
     }
 
+    @Test
+    public void shouldDisplayConnectionErrorMessageWhenNoInternetAndListingPhotos() {
+        TestScheduler scheduler = new TestScheduler();
+
+        ImageListPresenter presenter = new ImageListPresenter(imageListView, imageService, scheduler, scheduler);
+
+        when(imageService.listPhotos())
+                .thenReturn(Single.error(new UnknownHostException()));
+
+        presenter.requestImages();
+
+        scheduler.triggerActions();
+
+        verify(imageListView, times(1))
+                .showLoading(eq(true));
+
+        verify(imageListView, times(1))
+                .showConnectionError();
+
+        verify(imageListView, times(1))
+                .showLoading(eq(false));
+    }
+
+    @Test
+    public void shouldDisplayConnectionErrorMessageWhenNoInternetAndSearching() {
+        TestScheduler scheduler = new TestScheduler();
+
+        ImageListPresenter presenter = new ImageListPresenter(imageListView, imageService, scheduler, scheduler);
+        String searchTerm = "dogs";
+
+        when(imageService.searchPhotos(eq(searchTerm)))
+                .thenReturn(Single.error(new UnknownHostException()));
+
+        presenter.requestImages(searchTerm);
+
+        scheduler.triggerActions();
+
+        verify(imageListView, times(1))
+                .showLoading(eq(true));
+
+        verify(imageListView, times(1))
+                .showConnectionError();
+
+        verify(imageListView, times(1))
+                .showLoading(eq(false));
+    }
 }

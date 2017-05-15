@@ -2,7 +2,7 @@ package com.imagegallery.model;
 
 import com.google.gson.annotations.SerializedName;
 
-@SuppressWarnings("unused")
+@SuppressWarnings({"unused", "WeakerAccess"})
 class PhotoMedia {
 
     @SerializedName("m")

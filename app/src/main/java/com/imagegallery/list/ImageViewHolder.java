@@ -5,6 +5,7 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.imagegallery.R;
+import com.imagegallery.model.PhotoSearchResultItem;
 import com.squareup.picasso.Picasso;
 
 class ImageViewHolder extends RecyclerView.ViewHolder {
@@ -12,17 +13,17 @@ class ImageViewHolder extends RecyclerView.ViewHolder {
     private final ImageView imageView;
     private final int imageSize;
 
-    private final ImageAdapter.OnImageClickListener imageClickListener;
+    private final ImageAdapter.OnPhotoSearchResultClickListener imageClickListener;
 
-    ImageViewHolder(View itemView, ImageAdapter.OnImageClickListener imageClickListener, int imageSize) {
+    ImageViewHolder(View itemView, ImageAdapter.OnPhotoSearchResultClickListener imageClickListener, int imageSize) {
         super(itemView);
 
         this.imageSize = imageSize;
         this.imageClickListener = imageClickListener;
-        imageView = (ImageView) itemView.findViewById(R.id.image);
+        this.imageView = (ImageView) itemView.findViewById(R.id.image);
     }
 
-    void setImage(final ImageSearchResult image) {
+    void setImage(PhotoSearchResultItem image) {
         Picasso.with(imageView.getContext())
                 .load(image.getUrl())
                 .centerCrop()

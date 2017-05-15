@@ -10,21 +10,22 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 
 import com.imagegallery.R;
+import com.imagegallery.model.PhotoSearchResultItem;
 
 import java.util.List;
 
 class ImageAdapter extends RecyclerView.Adapter<ImageViewHolder> {
 
     private final int columns;
-    private final List<? extends ImageSearchResult> images;
+    private final List<PhotoSearchResultItem> images;
 
-    private OnImageClickListener imageClickListener;
+    private OnPhotoSearchResultClickListener searchResultClickListener;
 
-    interface OnImageClickListener {
-        void onImageClicked(ImageSearchResult image);
+    interface OnPhotoSearchResultClickListener {
+        void onImageClicked(PhotoSearchResultItem image);
     }
 
-    ImageAdapter(List<? extends ImageSearchResult> images, int columns) {
+    ImageAdapter(List<PhotoSearchResultItem> images, int columns) {
         this.images = images;
         this.columns = columns;
     }
@@ -41,7 +42,7 @@ class ImageAdapter extends RecyclerView.Adapter<ImageViewHolder> {
         Point size = new Point();
         display.getSize(size);
 
-        return new ImageViewHolder(view, imageClickListener, size.x / columns);
+        return new ImageViewHolder(view, searchResultClickListener, size.x / columns);
     }
 
     @Override
@@ -54,7 +55,7 @@ class ImageAdapter extends RecyclerView.Adapter<ImageViewHolder> {
         return images.size();
     }
 
-    void setOnImageClickListener(OnImageClickListener imageClickListener) {
-        this.imageClickListener = imageClickListener;
+    void setOnImageClickListener(OnPhotoSearchResultClickListener imageClickListener) {
+        this.searchResultClickListener = imageClickListener;
     }
 }

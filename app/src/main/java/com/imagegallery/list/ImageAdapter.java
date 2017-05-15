@@ -18,6 +18,12 @@ class ImageAdapter extends RecyclerView.Adapter<ImageViewHolder> {
     private final int columns;
     private final List<? extends ImageSearchResult> images;
 
+    private OnImageClickListener imageClickListener;
+
+    interface OnImageClickListener {
+        void onImageClicked(ImageSearchResult image);
+    }
+
     ImageAdapter(List<? extends ImageSearchResult> images, int columns) {
         this.images = images;
         this.columns = columns;
@@ -35,7 +41,7 @@ class ImageAdapter extends RecyclerView.Adapter<ImageViewHolder> {
         Point size = new Point();
         display.getSize(size);
 
-        return new ImageViewHolder(view, size.x / columns);
+        return new ImageViewHolder(view, imageClickListener, size.x / columns);
     }
 
     @Override
@@ -48,4 +54,7 @@ class ImageAdapter extends RecyclerView.Adapter<ImageViewHolder> {
         return images.size();
     }
 
+    void setOnImageClickListener(OnImageClickListener imageClickListener) {
+        this.imageClickListener = imageClickListener;
+    }
 }

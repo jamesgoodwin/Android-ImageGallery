@@ -1,15 +1,16 @@
 package com.imagegallery.fullscreen;
 
 import android.annotation.SuppressLint;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 
 import com.imagegallery.R;
+import com.squareup.picasso.Picasso;
 
 public class FullscreenImageActivity extends AppCompatActivity {
 
@@ -17,6 +18,7 @@ public class FullscreenImageActivity extends AppCompatActivity {
     private static final int AUTO_HIDE_DELAY_MILLIS = 3000;
 
     private static final int UI_ANIMATION_DELAY = 300;
+    public static final String IMAGE_URL = "ImageUrl";
     private final Handler mHideHandler = new Handler();
 
     private ImageView imageView;
@@ -25,11 +27,6 @@ public class FullscreenImageActivity extends AppCompatActivity {
         @SuppressLint("InlinedApi")
         @Override
         public void run() {
-            // Delayed removal of status and navigation bar
-
-            // Note that some of these constants are new as of API 16 (Jelly Bean)
-            // and API 19 (KitKat). It is safe to use them, as they are inlined
-            // at compile-time and do nothing on earlier devices.
             imageView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE
                     | View.SYSTEM_UI_FLAG_FULLSCREEN
                     | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
@@ -38,7 +35,6 @@ public class FullscreenImageActivity extends AppCompatActivity {
                     | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
         }
     };
-    private View mControlsView;
 
     private final Runnable mShowPart2Runnable = new Runnable() {
         @Override
@@ -48,10 +44,9 @@ public class FullscreenImageActivity extends AppCompatActivity {
             if (actionBar != null) {
                 actionBar.show();
             }
-            mControlsView.setVisibility(View.VISIBLE);
         }
     };
-    private boolean mVisible;
+    private boolean mVisible = true;
     private final Runnable mHideRunnable = new Runnable() {
         @Override
         public void run() {
@@ -75,9 +70,14 @@ public class FullscreenImageActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_fullscreen_image);
 
-        mVisible = true;
-        mControlsView = findViewById(R.id.fullscreen_content_controls);
         imageView = (ImageView) findViewById(R.id.image_view);
+
+        String imageUrl = getIntent().getStringExtra(IMAGE_URL);
+
+        Picasso.with(this)
+                .load(imageUrl)
+                .fit().centerInside()
+                .into(imageView);
 
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -85,9 +85,6 @@ public class FullscreenImageActivity extends AppCompatActivity {
                 toggle();
             }
         });
-
-        View dummyButton = findViewById(R.id.dummy_button);
-        dummyButton.setOnTouchListener(mDelayHideTouchListener);
     }
 
     @Override
@@ -111,7 +108,6 @@ public class FullscreenImageActivity extends AppCompatActivity {
         if (actionBar != null) {
             actionBar.hide();
         }
-        mControlsView.setVisibility(View.GONE);
         mVisible = false;
 
         // Schedule a runnable to remove the status and navigation bar after a delay

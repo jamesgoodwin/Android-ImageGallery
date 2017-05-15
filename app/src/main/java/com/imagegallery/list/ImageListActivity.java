@@ -1,6 +1,7 @@
 package com.imagegallery.list;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
@@ -10,6 +11,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.SearchView;
 
 import com.imagegallery.R;
+import com.imagegallery.fullscreen.FullscreenImageActivity;
 import com.imagegallery.list.service.FlickrImageService;
 
 import java.util.List;
@@ -53,6 +55,15 @@ public class ImageListActivity extends AppCompatActivity implements ImageListVie
         int columns = 3;
 
         ImageAdapter adapter = new ImageAdapter(images, columns);
+        adapter.setOnImageClickListener(new ImageAdapter.OnImageClickListener() {
+            @Override
+            public void onImageClicked(ImageSearchResult image) {
+                Intent intent = new Intent(ImageListActivity.this, FullscreenImageActivity.class);
+                intent.putExtra(FullscreenImageActivity.IMAGE_URL, image.getUrl());
+                startActivity(intent);
+            }
+        });
+
         imagesList.setAdapter(adapter);
         imagesList.setLayoutManager(new GridLayoutManager(ImageListActivity.this, columns));
     }
@@ -79,7 +90,7 @@ public class ImageListActivity extends AppCompatActivity implements ImageListVie
     }
 
     private void hideKeyboard() {
-        InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(searchView.getWindowToken(), 0);
     }
 

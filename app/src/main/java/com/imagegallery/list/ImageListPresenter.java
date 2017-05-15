@@ -3,11 +3,11 @@ package com.imagegallery.list;
 import com.imagegallery.list.service.ImageService;
 import com.imagegallery.model.PhotoSearchResult;
 
-import rx.functions.Action0;
-import rx.functions.Action1;
-import rx.schedulers.Schedulers;
-
-import static rx.android.schedulers.AndroidSchedulers.mainThread;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.functions.Action;
+import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
 
 class ImageListPresenter {
 
@@ -24,16 +24,16 @@ class ImageListPresenter {
 
         imageService.listPhotos()
                 .subscribeOn(Schedulers.io())
-                .observeOn(mainThread())
-                .doAfterTerminate(new Action0() {
+                .observeOn(AndroidSchedulers.mainThread())
+                .doAfterTerminate(new Action() {
                     @Override
-                    public void call() {
+                    public void run() throws Exception {
                         view.showLoading(false);
                     }
                 })
-                .subscribe(new Action1<PhotoSearchResult>() {
+                .subscribe(new Consumer<PhotoSearchResult>() {
                     @Override
-                    public void call(PhotoSearchResult photoSearchResult) {
+                    public void accept(@NonNull PhotoSearchResult photoSearchResult) throws Exception {
                         view.showImages(photoSearchResult.getItems());
                     }
                 });
@@ -44,16 +44,16 @@ class ImageListPresenter {
 
         imageService.searchPhotos(query)
                 .subscribeOn(Schedulers.io())
-                .observeOn(mainThread())
-                .doAfterTerminate(new Action0() {
+                .observeOn(AndroidSchedulers.mainThread())
+                .doAfterTerminate(new Action() {
                     @Override
-                    public void call() {
+                    public void run() throws Exception {
                         view.showLoading(false);
                     }
                 })
-                .subscribe(new Action1<PhotoSearchResult>() {
+                .subscribe(new Consumer<PhotoSearchResult>() {
                     @Override
-                    public void call(PhotoSearchResult photoSearchResult) {
+                    public void accept(@NonNull PhotoSearchResult photoSearchResult) throws Exception {
                         view.showImages(photoSearchResult.getItems());
                     }
                 });

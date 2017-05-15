@@ -2,7 +2,7 @@ package com.imagegallery.list.service;
 
 import com.imagegallery.model.PhotoSearchResult;
 
-import rx.Single;
+import io.reactivex.Single;
 
 public interface ImageService {
 

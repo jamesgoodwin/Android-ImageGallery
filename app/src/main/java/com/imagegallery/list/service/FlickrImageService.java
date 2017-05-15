@@ -2,11 +2,11 @@ package com.imagegallery.list.service;
 
 import com.imagegallery.model.PhotoSearchResult;
 
+import io.reactivex.Single;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
-import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
-import rx.Single;
 
 public class FlickrImageService implements ImageService {
 
@@ -17,7 +17,7 @@ public class FlickrImageService implements ImageService {
     public FlickrImageService() {
         Retrofit retrofit = new Retrofit.Builder()
                 .addConverterFactory(GsonConverterFactory.create())
-                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .baseUrl(FLICKR_BASE_URL)
                 .client(new OkHttpClient())
                 .build();

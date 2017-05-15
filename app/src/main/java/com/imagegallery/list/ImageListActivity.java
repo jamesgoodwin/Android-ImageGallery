@@ -46,12 +46,12 @@ public class ImageListActivity extends AppCompatActivity implements ImageListVie
 
         setContentView(R.layout.activity_image_list);
 
-        this.imagesList = (RecyclerView) findViewById(R.id.images_list);
         this.searchView = (SearchView) findViewById(R.id.search_view);
+        this.imagesList = (RecyclerView) findViewById(R.id.images_list);
         this.loadingOverlay = findViewById(R.id.loading_overlay);
 
-        // this is poor man's dependency injection to allow the FlickrImageService
-        // to be easily tested, creating the dependencies outside of the service.
+        // simple method to allow the FlickrImageService to be easily tested
+        // creating the dependencies outside of the service.
         Retrofit retrofit = new Retrofit.Builder()
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
@@ -73,6 +73,12 @@ public class ImageListActivity extends AppCompatActivity implements ImageListVie
     protected void onDestroy() {
         super.onDestroy();
         this.presenter.onDestroy();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        hideKeyboard();
     }
 
     @Override
@@ -101,6 +107,11 @@ public class ImageListActivity extends AppCompatActivity implements ImageListVie
     @Override
     public void showConnectionError() {
         Snackbar.make(imagesList, R.string.check_connection, LENGTH_LONG).show();
+    }
+
+    @Override
+    public void showGenericError() {
+        Snackbar.make(imagesList, R.string.error_retrieving_results, LENGTH_LONG).show();
     }
 
     private void initialiseSearchView() {

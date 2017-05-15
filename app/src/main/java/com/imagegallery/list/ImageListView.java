@@ -12,4 +12,5 @@ interface ImageListView {
 
     void showConnectionError();
 
+    void showGenericError();
 }

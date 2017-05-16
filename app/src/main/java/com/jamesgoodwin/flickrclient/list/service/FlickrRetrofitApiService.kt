@@ -1,6 +1,6 @@
-package com.imagegallery.list.service
+package com.jamesgoodwin.flickrclient.list.service
 
-import com.imagegallery.model.PhotoSearchResult
+import com.jamesgoodwin.flickrclient.model.PhotoSearchResult
 
 import io.reactivex.Single
 import retrofit2.http.GET

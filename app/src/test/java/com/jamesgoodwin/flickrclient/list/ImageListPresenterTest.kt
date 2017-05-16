@@ -1,9 +1,9 @@
-package com.imagegallery.list
+package com.jamesgoodwin.flickrclient.list
 
-import com.imagegallery.list.service.ImageService
-import com.imagegallery.model.PhotoMedia
-import com.imagegallery.model.PhotoSearchResult
-import com.imagegallery.model.PhotoSearchResultItem
+import com.jamesgoodwin.flickrclient.list.service.ImageService
+import com.jamesgoodwin.flickrclient.model.PhotoMedia
+import com.jamesgoodwin.flickrclient.model.PhotoSearchResult
+import com.jamesgoodwin.flickrclient.model.PhotoSearchResultItem
 import io.reactivex.Single
 import io.reactivex.schedulers.TestScheduler
 import org.hamcrest.CoreMatchers.equalTo

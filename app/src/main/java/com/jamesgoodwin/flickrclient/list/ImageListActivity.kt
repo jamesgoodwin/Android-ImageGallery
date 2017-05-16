@@ -1,4 +1,4 @@
-package com.imagegallery.list
+package com.jamesgoodwin.flickrclient.list
 
 import android.content.Context
 import android.content.Intent
@@ -14,17 +14,17 @@ import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.inputmethod.InputMethodManager
 import android.widget.SearchView
-import com.imagegallery.R
-import com.imagegallery.fullscreen.FullscreenImageActivity
-import com.imagegallery.fullscreen.FullscreenImageActivity.Companion.IMAGE_DESCRIPTION_EXTRA
-import com.imagegallery.fullscreen.FullscreenImageActivity.Companion.IMAGE_TITLE_EXTRA
-import com.imagegallery.fullscreen.FullscreenImageActivity.Companion.IMAGE_URL_EXTRA
-import com.imagegallery.list.ImageListPresenter.Companion.DATE_PUBLISHED_DESC_SORT_TYPE
-import com.imagegallery.list.ImageListPresenter.Companion.DATE_TAKEN_DESC_SORT_TYPE
-import com.imagegallery.list.service.FlickrImageService
-import com.imagegallery.list.service.FlickrImageService.Companion.FLICKR_BASE_URL
-import com.imagegallery.list.service.FlickrRetrofitApiService
-import com.imagegallery.model.PhotoSearchResultItem
+import com.jamesgoodwin.flickrclient.R
+import com.jamesgoodwin.flickrclient.fullscreen.FullscreenImageActivity
+import com.jamesgoodwin.flickrclient.fullscreen.FullscreenImageActivity.Companion.IMAGE_DESCRIPTION_EXTRA
+import com.jamesgoodwin.flickrclient.fullscreen.FullscreenImageActivity.Companion.IMAGE_TITLE_EXTRA
+import com.jamesgoodwin.flickrclient.fullscreen.FullscreenImageActivity.Companion.IMAGE_URL_EXTRA
+import com.jamesgoodwin.flickrclient.list.ImageListPresenter.Companion.DATE_PUBLISHED_DESC_SORT_TYPE
+import com.jamesgoodwin.flickrclient.list.ImageListPresenter.Companion.DATE_TAKEN_DESC_SORT_TYPE
+import com.jamesgoodwin.flickrclient.list.service.FlickrImageService
+import com.jamesgoodwin.flickrclient.list.service.FlickrImageService.Companion.FLICKR_BASE_URL
+import com.jamesgoodwin.flickrclient.list.service.FlickrRetrofitApiService
+import com.jamesgoodwin.flickrclient.model.PhotoSearchResultItem
 import io.reactivex.android.schedulers.AndroidSchedulers.mainThread
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_image_list.*
@@ -148,7 +148,6 @@ class ImageListActivity : AppCompatActivity(), ImageListView {
     }
 
     companion object {
-
         private val DATE_TAKEN_DIALOG_OPTION_POSITION = 1
     }
 }

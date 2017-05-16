@@ -1,11 +1,11 @@
-package com.imagegallery.fullscreen
+package com.jamesgoodwin.flickrclient.fullscreen
 
 import android.os.Bundle
 import android.os.Handler
 import android.support.v7.app.AppCompatActivity
 import android.view.View
 import android.view.View.*
-import com.imagegallery.R
+import com.jamesgoodwin.flickrclient.R
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_fullscreen_image.*
 

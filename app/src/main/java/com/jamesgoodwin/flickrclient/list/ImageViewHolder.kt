@@ -1,11 +1,11 @@
-package com.imagegallery.list
+package com.jamesgoodwin.flickrclient.list
 
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.widget.ImageView
 
-import com.imagegallery.R
-import com.imagegallery.model.PhotoSearchResultItem
+import com.jamesgoodwin.flickrclient.R
+import com.jamesgoodwin.flickrclient.model.PhotoSearchResultItem
 import com.squareup.picasso.Picasso
 
 internal class ImageViewHolder(

@@ -1,4 +1,4 @@
-package com.imagegallery.model
+package com.jamesgoodwin.flickrclient.model
 
 import com.google.gson.annotations.SerializedName
 

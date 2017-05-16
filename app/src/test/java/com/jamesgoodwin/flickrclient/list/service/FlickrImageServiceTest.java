@@ -1,7 +1,7 @@
-package com.imagegallery.list.service;
+package com.jamesgoodwin.flickrclient.list.service;
 
-import com.imagegallery.model.PhotoSearchResult;
-import com.imagegallery.model.PhotoSearchResultItem;
+import com.jamesgoodwin.flickrclient.model.PhotoSearchResult;
+import com.jamesgoodwin.flickrclient.model.PhotoSearchResultItem;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

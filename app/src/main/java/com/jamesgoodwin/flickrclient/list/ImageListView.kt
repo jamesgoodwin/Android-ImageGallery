@@ -1,6 +1,6 @@
-package com.imagegallery.list
+package com.jamesgoodwin.flickrclient.list
 
-import com.imagegallery.model.PhotoSearchResultItem
+import com.jamesgoodwin.flickrclient.model.PhotoSearchResultItem
 
 internal interface ImageListView {
 

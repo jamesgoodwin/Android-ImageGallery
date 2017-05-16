@@ -1,8 +1,8 @@
-package com.imagegallery.list
+package com.jamesgoodwin.flickrclient.list
 
-import com.imagegallery.list.service.ImageService
-import com.imagegallery.model.PhotoSearchResult
-import com.imagegallery.model.PhotoSearchResultItem
+import com.jamesgoodwin.flickrclient.list.service.ImageService
+import com.jamesgoodwin.flickrclient.model.PhotoSearchResult
+import com.jamesgoodwin.flickrclient.model.PhotoSearchResultItem
 import io.reactivex.Scheduler
 import io.reactivex.functions.Action
 import io.reactivex.functions.Consumer

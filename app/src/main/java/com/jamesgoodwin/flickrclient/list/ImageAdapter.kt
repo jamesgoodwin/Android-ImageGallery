@@ -1,4 +1,4 @@
-package com.imagegallery.list
+package com.jamesgoodwin.flickrclient.list
 
 import android.content.Context
 import android.graphics.Point
@@ -6,8 +6,8 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.view.WindowManager
-import com.imagegallery.R
-import com.imagegallery.model.PhotoSearchResultItem
+import com.jamesgoodwin.flickrclient.R
+import com.jamesgoodwin.flickrclient.model.PhotoSearchResultItem
 
 internal class ImageAdapter(private val images: List<PhotoSearchResultItem>, private val columns: Int) : RecyclerView.Adapter<ImageViewHolder>() {
 
